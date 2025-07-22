@@ -6,11 +6,24 @@ import os
 import argparse
 import platform
 import ctypes
-import commentjson
-from metprint import (
-	LogType,
-	Logger
-)
+
+try:
+    import oyaml as yaml
+except ImportError:
+    import yaml  # pyyaml
+# TODO strictyaml - built in solution to the Norway problem...
+
+#import commentjson  # stupid, use yaml
+try:
+	from metprint import (
+		LogType,
+		Logger
+	)
+except ModuleNotFoundError:
+	from fake_metprint import (
+		LogType,
+		Logger
+	)
 
 def cPrint(colourHex):
 	''' Print a hex colour '''
@@ -23,11 +36,13 @@ def cPrint(colourHex):
 
 def printColours(winTerm):
 	''' Print the colours for a theme '''
-	scheme = commentjson.loads(open(winTerm).read()[:-2])
+	#scheme = commentjson.loads(open(winTerm).read()[:-2])
+	scheme = yaml.load(open(winTerm), Loader=yaml.BaseLoader)  # resolve the Norway problem
 	keys = ["background", "black", "brightBlack", "foreground", "white",
 	"brightWhite", "red", "yellow", "brightYellow", "green", "cyan", "blue",
 	"purple", "brightRed", "brightYellow", "brightGreen", "brightCyan",
 	"brightBlue", "brightPurple"]
+	keys = ["base00", "base01", "base02", "base03", "base04", "base05", "base06", "base07", "base08", "base09", "base0A", "base0B", "base0C", "base0D", "base0E", "base0F",]
 	for key in keys:
 		cPrint(scheme[key])
 	print()
@@ -57,6 +72,8 @@ def main():
 
 	files = {}
 	for theme in os.listdir(args.themes):
+		if theme == '.git': continue  # FIXME original premise code flawed
+		if not theme.endswith('yaml'): continue  # FIXME original premise code flawed
 		key = theme.replace(".json", "").replace("base16-", "").replace("base24-", "")
 		if key in files:
 			files[key].append(theme)
