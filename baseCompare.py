@@ -88,7 +88,7 @@ def main():
 	for key in files:
 		if len(files[key]) == 2: # Both variants
 			Logger().logPrint(key, LogType.HEADER)
-			Logger().logPrint("  B     W   R Y   G C B M ", LogType.BOLD)
+			Logger().logPrint("      B     W   R Y   G C B M ", LogType.BOLD)
 			if "base16-" in files[key][0]: # First one is base16
 				printColours(os.path.join(args.themes, files[key][0]))
 				printColours(os.path.join(args.themes, files[key][1]))
@@ -97,7 +97,7 @@ def main():
 				printColours(os.path.join(args.themes, files[key][0]))
 		elif args.all:
 			Logger().logPrint(files[key][0].replace(".json", ""), LogType.HEADER)
-			Logger().logPrint("  B     W   R Y   G C B M ", LogType.BOLD)
+			Logger().logPrint("      B     W   R Y   G C B M ", LogType.BOLD)
 			printColours(os.path.join(args.themes, files[key][0]))
 
 
