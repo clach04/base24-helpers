@@ -38,13 +38,16 @@ def printColours(winTerm):
 	''' Print the colours for a theme '''
 	#scheme = commentjson.loads(open(winTerm).read()[:-2])
 	scheme = yaml.load(open(winTerm), Loader=yaml.BaseLoader)  # resolve the Norway problem
+	#print('scheme %r' % scheme)
 	keys = ["background", "black", "brightBlack", "foreground", "white",
 	"brightWhite", "red", "yellow", "brightYellow", "green", "cyan", "blue",
 	"purple", "brightRed", "brightYellow", "brightGreen", "brightCyan",
 	"brightBlue", "brightPurple"]
 	keys = ["base00", "base01", "base02", "base03", "base04", "base05", "base06", "base07", "base08", "base09", "base0A", "base0B", "base0C", "base0D", "base0E", "base0F",]
 	for key in keys:
-		cPrint(scheme[key])
+		tmp_rgb_color = scheme[key]
+		if not tmp_rgb_color.startswith('#'): tmp_rgb_color = '#' + tmp_rgb_color
+		cPrint(tmp_rgb_color)
 	print()
 
 
